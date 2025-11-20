@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>わんこケアTODO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">DOG FRIENDLY TODO</p>
+        <h1>ワンコの世話を<br><span>楽しく、かわいく、計画的に。</span></h1>
+        <p class="lead">お散歩、ゴハン、グルーミング…毎日のタスクを遊び心いっぱいにまとめました。</p>
+        <div class="hero__badges">
+          <span class="pill pill--sun">☀️ 毎朝リマインダー</span>
+          <span class="pill pill--paw">🐾 足あとで進捗</span>
+          <span class="pill pill--treat">🍖 ごほうびメモ</span>
+        </div>
+      </div>
+      <div class="hero__illu" aria-hidden="true">
+        <div class="paw paw--1">🐾</div>
+        <div class="paw paw--2">🐾</div>
+        <div class="paw paw--3">🐾</div>
+        <div class="dog-card">
+          <p class="dog-card__label">今日のパートナー</p>
+          <h2>モカ</h2>
+          <p class="dog-card__mood">ごきげん度 <span id="mood">92%</span></p>
+          <div class="treats">
+            <span>🎾 プレイ</span>
+            <span>🧴 ケア</span>
+            <span>🍖 ごほうび</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">ADD TASK</p>
+            <h3>ワンコTODOを登録</h3>
+            <p class="muted">シンプルなタスクから、リマインダー付きのケア予定までまとめて管理。</p>
+          </div>
+          <div class="progress">
+            <p class="progress__label">本日の完了率</p>
+            <div class="progress__bar" role="progressbar" aria-label="完了率">
+              <div class="progress__fill" id="progressFill"></div>
+            </div>
+            <p class="progress__meta"><span id="completedCount">0</span> / <span id="totalCount">0</span> 完了</p>
+          </div>
+        </div>
+
+        <form id="taskForm" class="task-form">
+          <div class="field">
+            <label for="title">タイトル</label>
+            <input id="title" name="title" type="text" placeholder="朝のお散歩" required>
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="category">カテゴリー</label>
+              <select id="category" name="category">
+                <option value="お散歩">お散歩</option>
+                <option value="ごはん">ごはん</option>
+                <option value="遊び">遊び</option>
+                <option value="ケア">ケア</option>
+                <option value="トレーニング">トレーニング</option>
+                <option value="カスタム">＋カスタム</option>
+              </select>
+            </div>
+            <div class="field" id="customCategoryField" hidden>
+              <label for="customCategory">カスタム名</label>
+              <input id="customCategory" type="text" placeholder="シャンプー予約">
+            </div>
+            <div class="field">
+              <label for="priority">たいせつ度</label>
+              <select id="priority" name="priority">
+                <option value="中">中</option>
+                <option value="高">高</option>
+                <option value="低">低</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="date">予定日</label>
+              <input id="date" name="date" type="date">
+            </div>
+            <div class="field">
+              <label for="time">時間</label>
+              <input id="time" name="time" type="time">
+            </div>
+            <div class="field">
+              <label for="reward">ごほうび</label>
+              <input id="reward" name="reward" type="text" placeholder="おやつ1個">
+            </div>
+          </div>
+          <div class="field">
+            <label for="notes">メモ</label>
+            <textarea id="notes" name="notes" rows="2" placeholder="好きな公園まで行く / 途中で水分補給"></textarea>
+          </div>
+          <div class="actions">
+            <div class="chips" id="quickAdd">
+              <button type="button" data-template='{"title":"ごはん補充","category":"ごはん","priority":"中","notes":"フード残量チェック"}'>🍚 フード補充</button>
+              <button type="button" data-template='{"title":"ブラッシング","category":"ケア","priority":"中","notes":"週に2回サラサラ"}'>🧴 ブラッシング</button>
+              <button type="button" data-template='{"title":"お気に入り公園","category":"お散歩","priority":"高","notes":"芝生ゾーンまで"}'>🌳 ロング散歩</button>
+            </div>
+            <button class="primary" type="submit">タスクを追加</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">SCHEDULE</p>
+            <h3>タスクリスト</h3>
+            <p class="muted">フィルターで気分や時間に合わせて並べ替え。完了したら足あとをポチッ。</p>
+          </div>
+          <div class="filters">
+            <button class="filter is-active" data-filter="all">すべて</button>
+            <button class="filter" data-filter="pending">予定</button>
+            <button class="filter" data-filter="done">完了</button>
+            <button class="filter" data-filter="today">今日</button>
+            <button class="filter" data-filter="high">たいせつ</button>
+          </div>
+        </div>
+        <div class="list" id="taskList" aria-live="polite"></div>
+      </section>
+    </main>
+  </div>
+
+  <template id="taskTemplate">
+    <article class="card">
+      <div class="card__top">
+        <div>
+          <p class="card__category"></p>
+          <h4 class="card__title"></h4>
+          <p class="card__meta"></p>
+        </div>
+        <div class="card__badges"></div>
+      </div>
+      <p class="card__notes"></p>
+      <div class="card__actions">
+        <label class="checkbox">
+          <input type="checkbox" class="task-check" />
+          <span>完了したら足あと！</span>
+        </label>
+        <div class="card__buttons">
+          <button class="ghost mark-today">今日</button>
+          <button class="ghost delete">削除</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
